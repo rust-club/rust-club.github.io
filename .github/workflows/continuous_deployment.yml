@@ -1,0 +1,39 @@
+name: Continuous deployment
+on:
+  workflow_run:
+    branches: [main]
+    workflows: [Continuous integration]
+    types: [completed]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: wasm32-unknown-unknown
+
+      - uses: jetli/trunk-action@v0.4.0
+      - uses: jetli/wasm-bindgen-action@v0.2.0
+
+      - uses: actions/checkout@v4
+
+      - run : trunk build --release
+
+      - uses: actions/upload-pages-artifact@v2
+        with:
+          path: "dist/"
+
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v2
