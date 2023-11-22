@@ -1,5 +1,8 @@
 use serde::Deserialize;
 use yew::prelude::*;
+use yew_bootstrap::component::*;
+use yew_bootstrap::util::*;
+//use yew_bootstrap::component::{BrandType, NavBar, NavDropdownItem, NavItem};
 
 #[derive(Clone, PartialEq, Deserialize)]
 struct Video {
@@ -49,6 +52,28 @@ fn videos_list(VideosListProps { videos, on_click }: &VideosListProps) -> Html {
             }
         })
         .collect()
+}
+
+#[function_component(MyNavBar)]
+fn my_nav_bar() -> Html {
+    let brand = BrandType::BrandCombined {
+        text: AttrValue::from("Rust Club"),
+        url: Some(AttrValue::from("/")),
+        image_url: AttrValue::from("/rust_club_icon.png"),
+        alt: AttrValue::from("Rust Club Icon"),
+        dimension: Some(Dimension {
+            width: String::from("80"),
+            height: String::from("80"),
+        }),
+    };
+    html! {
+        <NavBar nav_id={"navbar"} class="navbar-expand-lg navbar-light bg-light" brand={brand}>
+            <NavItem text="Home" url={AttrValue::from("/")} />
+            <NavItem text="more">
+                <NavDropdownItem text="Icon" url={AttrValue::from("/rust_club_icon.png")} />
+            </NavItem>
+        </NavBar>
+    }
 }
 
 #[function_component(App)]
@@ -103,12 +128,15 @@ fn app() -> Html {
     });
     html! {
         <>
+            {include_inline()}
+            <MyNavBar/>
             <h1>{ "RustConf Explorer" }</h1>
             <div>
                 <h3>{ "Videos to watch" }</h3>
                 <VideosList videos={(*videos).clone()} on_click={on_video_select.clone()} />
             </div>
             { for details }
+            {include_cdn_js()}
         </>
     }
 }
