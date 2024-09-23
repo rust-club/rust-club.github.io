@@ -20,12 +20,38 @@ fn my_nav_bar() -> Html {
             height: String::from("80"),
         }),
     };
+    let navigator = use_navigator().unwrap();
+
+    let about = {
+        let navigator = navigator.clone();
+        let onclick = Callback::from(move |_| navigator.push(&Route::About));
+        html! {
+            <NavItem text="About" {onclick} />
+        }
+    };
+
+    let yew_tutorial = {
+        let navigator = navigator.clone();
+        let onclick = Callback::from(move |_| navigator.push(&Route::YewTutorial));
+        html! {
+            <NavDropdownItem text="Yew Tutorial" {onclick} />
+        }
+    };
+
+    let manim_rs = {
+        let navigator = navigator.clone();
+        let onclick = Callback::from(move |_| navigator.push(&Route::Manim));
+        html! {
+            <NavDropdownItem text="manim-rs" {onclick} />
+        }
+    };
+
     html! {
         <NavBar nav_id={"navbar"} class="navbar-expand-lg navbar-light bg-light" brand={brand}>
-            <NavItem text="About" url={AttrValue::from("/about")} />
+            {about}
             <NavItem text="Projects">
-                <NavDropdownItem text="Yew Tutorial" url={AttrValue::from("/projects/yew_tutorial")} />
-                <NavDropdownItem text="manim-rs" url={AttrValue::from("/projects/manim-rs")} />
+                {yew_tutorial}
+                {manim_rs}
             </NavItem>
         </NavBar>
     }
@@ -61,8 +87,8 @@ fn app() -> Html {
     html! {
         <>
         {include_inline()}
-        <MyNavBar/>
         <BrowserRouter>
+            <MyNavBar/>
             <Switch<Route> render={switch} />
         </BrowserRouter>
         {include_cdn_js()}
