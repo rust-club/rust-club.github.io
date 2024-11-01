@@ -26,7 +26,7 @@ fn my_nav_bar() -> Html {
         let navigator = navigator.clone();
         let onclick = Callback::from(move |_| navigator.push(&Route::About));
         html! {
-            <NavItem text="About" {onclick} />
+            <NavItem text="About" {onclick} url="#" />
         }
     };
 
@@ -34,7 +34,7 @@ fn my_nav_bar() -> Html {
         let navigator = navigator.clone();
         let onclick = Callback::from(move |_| navigator.push(&Route::YewTutorial));
         html! {
-            <NavDropdownItem text="Yew Tutorial" {onclick} />
+            <NavDropdownItem text="Yew Tutorial" {onclick} url="#" />
         }
     };
 
@@ -42,7 +42,7 @@ fn my_nav_bar() -> Html {
         let navigator = navigator.clone();
         let onclick = Callback::from(move |_| navigator.push(&Route::Manim));
         html! {
-            <NavDropdownItem text="manim-rs" {onclick} />
+            <NavDropdownItem text="manim-rs" {onclick} url="#" />
         }
     };
 
